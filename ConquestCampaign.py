@@ -1,6 +1,6 @@
 def ConquestCampaign(N:int, M:int, L:int, battalion:list):
-	k = M * N - L
 	day = 0
+	k = 1
 	Land =  [[0] * M for i in range(N)]
 	Land_1 = [[0] * M for i in range(N)]
 	for d in range(0, len(battalion), 2):
