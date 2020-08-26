@@ -20,12 +20,15 @@ def hoar_sort(A:list):
 		k += 1
 
 
-def SynchronizingTables(n, Ids:list, Salary:list):
-	A = [0] * n
+def SynchronizingTables(N, ids:list, salary:list):
+	Buffer = [0] * N
+	ID = ids[:]
 	k = 0
-	hoar_sort(Salary)
-	d = {a: Salary[a - 1] for a in range(1,n+1)}
-	for i in Ids:
-		A[k] = d[i] 
+	hoar_sort(ID)
+	hoar_sort(salary)
+	d = {ID[a]: salary[a] for a in range(N)}
+	for i in ids:
+		Buffer[k] = d[i]
 		k += 1
-	return A
+	salary = Buffer[:]
+	return salary
