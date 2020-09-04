@@ -26,9 +26,3 @@ def PrintingCosts(L):
 		else:
 			costs += 23
 	return costs
-
-
-
-
-
-PrintingCosts("DE F")
