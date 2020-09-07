@@ -40,7 +40,7 @@ def BigMinus(s1:str, s2:str):
 			difference = str(diff) + difference
 			diff = 0
 		i += 1
-	while int(difference[:1]) == 0:
+	while len(difference) > 1 and int(difference[:1]) == 0:
 		difference = difference[1:]
 	return difference
 
