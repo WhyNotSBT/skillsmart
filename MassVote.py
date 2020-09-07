@@ -18,5 +18,5 @@ def MassVote(N,Vote):
 		case_1 = "majority winner " + str(Index[0] + 1)
 		return case_1
 	else:
-		case_2 = "majority winner " + str(Index[0] + 1)
+		case_2 = "minority winner " + str(Index[0] + 1)
 		return case_2
