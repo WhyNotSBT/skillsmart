@@ -1,107 +1,58 @@
-def add_str(command):
-	Shoe = open('Shoe.txt','a').write(command[2:])
-	try:
-		add = open('Change.txt','r').read()
-		add = command + '\n' + add
-		Change = open('Change.txt','w').write(add)
-	except FileNotFoundError:
-		Change = open('Change.txt','w').write(command + '\n')
-	command_id = open('command_id.txt','r').read()
-	if command_id and command_id[-1] == '4':
-		Change = open('Change.txt','w').write(command + '\n')
-		ReChange = open('ReChange.txt','w').write('')
-	command_id = open('command_id.txt','a').write('1')
-
-
-def del_str(command):
-	N = int(command[2:])
-	de = open('Shoe.txt','r').read()
-	if N < len(de):
-		try:
-			add = open('Change.txt','r').read()
-			add = '2 ' + de[ -N : ] + '\n' + add
-			Change = open('Change.txt','w').write(add)
-		except FileNotFoundError:
-			Change = open('Change.txt','w').write('2 ' + de[ -N :])
-		command_id = open('command_id.txt','r').read()
-		if command_id and command_id[-1] == '4':
-			Change = open('Change.txt','w').write('2 ' + de[ -N : ] + '\n')
-			ReChange = open('ReChange.txt','w').write('')
-		command_id = open('command_id.txt','a').write('2')
-		de = de[: -N ]
-		Shoe = open('Shoe.txt','w').write(de)
-	else:
-		de ='2 ' + de + '\n'
-		Change = open('Change.txt','w').write(de)
-		Shoe = open('Shoe.txt','w').write('')
-		command_id = open('command_id.txt','r').read()
-		if command_id and command_id[-1] == '4':
-			Change = open('Change.txt','w').write(de)
-			ReChange = open('ReChange.txt','w').write('')
-		command_id = open('command_id.txt','a').write('2')
-
-
-def Undo():
-	back = open('Change.txt','r').readline()
-	if back[:2] == '1 ':
-		de = open('Shoe.txt','r').read()
-		de = de[: -len(back) + 3]
-		Shoe = open('Shoe.txt','w').write(de)
-		try:
-			add = open('ReChange.txt','r').read()
-			add = back + add
-			ReChange = open('ReChange.txt','w').write(add)
-		except FileNotFoundError:
-			ReChange = open('ReChange.txt','w').write(back) 
-		Change_line = open('Change.txt','r').read()
-		Change = open('Change.txt','w').write(Change_line[len(back):])
-	elif back[:2] == '2 ':
-		de = open('Shoe.txt','r').read()
-		de = de + back[2:-1]
-		Shoe = open('Shoe.txt','w').write(de)
-		try:
-			add = open('ReChange.txt','r').read()
-			add = back + add
-			ReChange = open('ReChange.txt','w').write(add)
-		except FileNotFoundError:
-			ReChange = open('ReChange.txt','w').write(back)
-		Change_line = open('Change.txt','r').read()
-		Change = open('Change.txt','w').write(Change_line[len(back):])
-
-
-def Redo():
-	back = open('ReChange.txt','r').readline()
-	if back[:2] == '1 ':
-		Shoe = open('Shoe.txt','a').write(back[2:-1])
-		ReChange_line = open('ReChange.txt','r').read()
-		ReChange = open('ReChange.txt','w').write(ReChange_line[len(back):])
-	elif back[:2] == '2 ':
-		de = open('Shoe.txt','r').read()
-		Shoe = open('Shoe.txt','w').write(de[:- len(back) + 3])
-		ReChange_line = open('ReChange.txt','r').read()
-		ReChange = open('ReChange.txt','w').write(ReChange_line[len(back):])
-	Change_line = open('Change.txt','r').read()
-	Change = open('Change.txt','w').write(back + Change_line)
+line = ''
+change = []
+rechange = []
+ID = []
 
 
 def BastShoe(command:str):
-	command_id = open('command_id.txt','a').write('')
+	global line, change, rechange, ID
 	if command[:2] == '1 ':
-		add_str(command)
-	elif command[:2] == '2 ':
-		del_str(command)
-	elif command[:2] == '3 ':
-		In = open('Shoe.txt','r').read()
+		line += command[2:]
+		if ID and ID[-1] == 4:
+			change = [command]
+			rechange = []
+		else:
+			change.append(command)
+		ID.append(1)
+	if command[:2] == '2 ':
+		N = int(command[2:])
+		if N < len(line):
+			if ID and ID[-1] == 4:
+				change = ['2 ' + line[ -N :]]
+				rechange = []
+			else:
+				change.append('2 ' + line[ -N :])
+			line = line[: -N ]
+		else:
+			if ID and ID[-1] == 4:
+				change = ['2 ' + line]
+				rechange = []
+			else:
+				change.append('2 ' + line)
+			line = ''
+		ID.append(2)
+	if command[:2] == '3 ':
+		N = int(command[2:])
 		try:
-			In = In[int(command[2:])]
-			return In
+			Elem = line[N]
+			return Elem
 		except IndexError:
 			return ''
-	elif command == '4':
-		Undo()
-		command_id = open('command_id.txt','a').write('4')
-	elif command == '5':
-		Redo()
-	line = open('Shoe.txt','r').read()
+	if change and command == '4':
+		last_change = change.pop()
+		if last_change[:2] == '1 ':
+			line = line[: -len(last_change) + 2]
+			rechange.append(last_change)
+		elif last_change[:2] == '2 ':
+			line += last_change[2:]
+			rechange.append(last_change)
+		ID.append(4)
+	if rechange and command == '5':
+		last_rechange = rechange.pop()
+		if last_rechange[:2] == '1 ':
+			line += last_rechange[2:]
+			change.append(last_rechange)
+		elif last_rechange[:2] == '2 ':
+			line = line[:-len(last_rechange) + 2]
+			change.append(last_rechange)
 	return line
-	
