@@ -1,16 +1,33 @@
 def SherlockValidString(s:str):
-	sum_value = 0
+	Flag = True
 	D = {}
 	for i in s:
 		if i in D:
 			D[i] += 1
 		else:
 			D[i] = 1
-	for key in D:
-		sum_value += D[key]
-	if (sum_value % len(D) == 0) or ((sum_value - 1) % len(D) == 0):
-		return True
-	elif (1 in D.values()) and ((sum_value - 1) % (len(D) - 1) == 0):
-		return True
-	else:
-		return False
+	print(D)
+	Val = sorted(list(D.values()))
+	print(Val)
+	if (Val[0] != Val[-1]) and len(Val) > 2:
+		if Val[0] == 1:
+			Val = Val[1:]
+			if Val[0] == Val[-1]:
+				return True
+		Val = sorted(list(D.values()))
+		print(Val)
+		if Val[0] == (Val[-1] - 1):
+			for i in range(2,len(Val) - 1):
+				if Val[0] != Val[-i]:
+					return False
+			return True
+	if len(Val) == 2:
+		if Val[0] == Val[-1]:
+			return True
+		elif Val[0] == 1:
+			return True
+		elif Val[0] == (Val[-1] - 1):
+			return True
+		else:
+			return False
+	return False
