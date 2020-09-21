@@ -26,4 +26,7 @@ def SherlockValidString(s:str):
 			return True
 		else:
 			return False
+	if len(Val) > 2:
+		if Val[0] == Val[-1]:
+			return True
 	return False
