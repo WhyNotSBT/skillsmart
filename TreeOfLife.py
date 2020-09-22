@@ -14,14 +14,14 @@ def TreeOfLife( H:int , W:int , N:int , tree:list):
 			for k in range(H):
 				for l in range(W):
 					if tree[k][l] >= 3:
-						if k - 1 > -1:
-							tree[k - 1][l] = 0
-						if k + 1 < H:
-							tree[k + 1][l] = 0
 						tree[k][l] = 0
-						if l + 1 < W:
+						if (k - 1 > -1) and tree[k - 1][l] < 3:
+							tree[k - 1][l] = 0
+						if (k + 1 < H) and tree[k + 1][l] < 3:
+							tree[k + 1][l] = 0
+						if (l + 1 < W) and tree[k][l + 1] < 3:
 							tree[k][l + 1] = 0
-						if l - 1 > -1:
+						if (l - 1 > -1) and tree[k][l - 1] < 3:
 							tree[k][l - 1] = 0
 	for i in tree:
 		for j in range(W):
