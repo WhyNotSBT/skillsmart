@@ -1,7 +1,5 @@
 def Football(F:list, N:int):
 	F_sort = sorted(F)
-	print(F)
-	print(F_sort)
 	Not_sort = []
 	A = []
 	for i in range(N):
