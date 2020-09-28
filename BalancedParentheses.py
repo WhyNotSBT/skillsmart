@@ -1,17 +1,9 @@
-def perm(n:int, s:str, op:int, cl:int):
-	global A
-	if op + cl == n * 2:
+def BalancedParentheses(N:int, s='', op=0, cl=0, A=[]):
+	if op + cl == N * 2:
 		A.append(s)
-	if op < n :
-		perm (n, s + '(', op + 1, cl)
+	if op < N :
+		BalancedParentheses(N, s + '(', op + 1, cl, A)
 	if op - cl > 0:
-		perm (n, s + ')', op, cl + 1)
-
-
-def BalancedParentheses(N):
-	global A
-	perm(N, s='', op=0, cl=0)
+		BalancedParentheses(N, s + ')', op, cl + 1, A)
 	A = ' '.join(A)
-	return(A)
-
-A = []
+	return A
