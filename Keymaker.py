@@ -1,6 +1,6 @@
 def Keymaker(k:int):
 	Door = [1] * k
-	if k == 0:
+	if k == 1:
 		return '1'
 	for n in range(2 ,k + 1):
 		for i in range(n-1,k,n):
